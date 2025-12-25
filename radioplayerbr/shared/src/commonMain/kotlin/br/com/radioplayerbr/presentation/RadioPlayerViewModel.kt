@@ -1,20 +1,19 @@
 package br.com.radioplayerbr.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import br.com.radioplayerbr.data.model.PlaybackInfo
 import br.com.radioplayerbr.data.model.PlayerState
 import br.com.radioplayerbr.data.model.RadioStation
 import br.com.radioplayerbr.data.repository.RadioRepository
 import br.com.radioplayerbr.domain.AudioPlayer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class RadioPlayerViewModel(
     private val repository: RadioRepository,
     private val audioPlayer: AudioPlayer
-) {
-    private val viewModelScope = CoroutineScope(Dispatchers.Main)
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RadioPlayerUiState())
     val uiState: StateFlow<RadioPlayerUiState> = _uiState.asStateFlow()
@@ -106,7 +105,8 @@ class RadioPlayerViewModel(
         }
     }
 
-    fun onDispose() {
+    override fun onCleared() {
+        super.onCleared()
         audioPlayer.release()
     }
 }

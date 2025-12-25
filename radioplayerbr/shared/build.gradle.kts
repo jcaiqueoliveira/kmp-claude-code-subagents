@@ -53,6 +53,10 @@ kotlin {
 
                 // ViewModel
                 implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+
+                // Koin for DI
+                implementation("io.insert-koin:koin-core:3.5.6")
+                implementation("io.insert-koin:koin-compose:1.1.5")
             }
         }
 
