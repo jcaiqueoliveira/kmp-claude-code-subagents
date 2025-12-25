@@ -33,13 +33,19 @@ O projeto utiliza uma arquitetura limpa e moderna:
 
 ### Tecnologias
 
-- **Kotlin Multiplatform**: Compartilhamento de código entre Android e iOS
-- **Compose Multiplatform**: UI declarativa multiplataforma
-- **Ktor**: Cliente HTTP para networking
-- **Kotlinx Serialization**: Serialização JSON
-- **Multiplatform Settings**: Armazenamento de dados local
-- **Media3 (Android)**: Player de áudio para Android
+- **Kotlin 2.0.20**: Última versão do Kotlin com compilador otimizado
+- **Compose Multiplatform 1.7.0**: UI declarativa 100% compartilhada entre plataformas
+- **Ktor 2.3.12**: Cliente HTTP para networking
+- **Kotlinx Serialization 1.7.1**: Serialização JSON
+- **Multiplatform Settings 1.1.1**: Armazenamento de dados local
+- **Media3 1.4.1 (Android)**: Player de áudio para Android
 - **AVFoundation (iOS)**: Player de áudio para iOS
+
+### Destaques
+
+- ✨ **100% Compose**: Interface totalmente em Compose Multiplatform, inclusive no iOS (sem SwiftUI)
+- 🚀 **Kotlin 2.0**: Aproveita as melhorias de performance do novo compilador K2
+- 📦 **Zero duplicação de UI**: Todo código de interface é compartilhado
 
 ## Estrutura do Projeto
 
@@ -62,9 +68,8 @@ radioplayerbr/
 │   │   └── AndroidManifest.xml
 │   └── build.gradle.kts
 └── iosApp/                          # Aplicativo iOS
-    ├── ContentView.swift
-    ├── RadioPlayerApp.swift
-    └── Info.plist
+    ├── AppDelegate.swift            # Entry point iOS
+    └── Info.plist                   # Configurações iOS
 ```
 
 ## Funcionalidades
@@ -92,14 +97,15 @@ Você pode substituir os dados mock por uma API real editando `RadioApiService.k
 ## Requisitos
 
 ### Android
-- Android Studio Arctic Fox ou superior
-- JDK 17
+- Android Studio Hedgehog ou superior (2023.1.1+)
+- JDK 17 ou superior
 - Android SDK 24+
+- Gradle 8.2+
 
 ### iOS
-- Xcode 14+
-- macOS com suporte a M1/M2 ou Intel
-- CocoaPods
+- Xcode 15+
+- macOS 12+ (Monterey ou superior)
+- CocoaPods (opcional)
 
 ## Como Executar
 
@@ -115,14 +121,19 @@ Você pode substituir os dados mock por uma API real editando `RadioApiService.k
 
 ### iOS
 
-1. Abra o projeto no Xcode navegando até `iosApp/`
-2. Execute o build do framework shared primeiro:
+1. Execute o build do framework shared:
 
 ```bash
-./gradlew :shared:embedAndSignAppleFrameworkForXcode
+./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
 ```
 
-3. Abra o projeto iOS no Xcode e execute
+2. Abra o projeto iOS no Xcode:
+   - Crie um novo projeto iOS Application no Xcode
+   - Adicione o framework `shared.framework` gerado
+   - Use o arquivo `AppDelegate.swift` fornecido
+   - Execute no simulador ou device
+
+Ou use o projeto Xcode pré-configurado na pasta `iosApp/`
 
 ## Customização
 
