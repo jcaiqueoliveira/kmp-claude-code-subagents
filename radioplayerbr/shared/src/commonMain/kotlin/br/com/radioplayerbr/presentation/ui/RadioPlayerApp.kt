@@ -30,10 +30,4 @@ fun RadioPlayerApp(viewModel: RadioPlayerViewModel) {
             )
         }
     }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            viewModel.onDispose()
-        }
-    }
 }

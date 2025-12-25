@@ -1,1 +1,4 @@
 .idea
+
+# GitHub workflows (add manually due to GitHub App permissions)
+.github/

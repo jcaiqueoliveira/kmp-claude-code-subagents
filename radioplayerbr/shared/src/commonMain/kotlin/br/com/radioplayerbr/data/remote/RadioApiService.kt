@@ -1,8 +1,11 @@
 package br.com.radioplayerbr.data.remote
 
 import br.com.radioplayerbr.data.model.RadioStation
+import br.com.radioplayerbr.data.remote.dto.RadioStationDto
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
@@ -17,21 +20,67 @@ class RadioApiService {
         }
     }
 
-    // Mock data - pode ser substituído por API real (RadioBrowser API ou similar)
-    suspend fun getRadioStations(): List<RadioStation> {
-        // Simulando delay de rede
-        kotlinx.coroutines.delay(500)
+    private companion object {
+        const val BASE_URL = "https://de1.api.radio-browser.info/json"
+    }
 
-        return getMockRadioStations()
+    suspend fun getRadioStations(): List<RadioStation> {
+        return try {
+            // Busca rádios brasileiras mais populares
+            val response: List<RadioStationDto> = client.get("$BASE_URL/stations/bycountrycodeexact/BR") {
+                parameter("limit", 50)
+                parameter("order", "votes")
+                parameter("reverse", "true")
+                parameter("hidebroken", "true")
+            }.body()
+
+            response.map { it.toRadioStation() }
+        } catch (e: Exception) {
+            println("Error fetching radio stations: ${e.message}")
+            // Fallback para dados mock em caso de erro
+            getMockRadioStations()
+        }
     }
 
     suspend fun searchRadioStations(query: String): List<RadioStation> {
-        kotlinx.coroutines.delay(300)
-        return getMockRadioStations().filter {
-            it.name.contains(query, ignoreCase = true) ||
-            it.genre?.contains(query, ignoreCase = true) == true ||
-            it.city?.contains(query, ignoreCase = true) == true
+        return try {
+            if (query.isBlank()) {
+                return getRadioStations()
+            }
+
+            val response: List<RadioStationDto> = client.get("$BASE_URL/stations/byname/$query") {
+                parameter("limit", 30)
+                parameter("countrycode", "BR")
+                parameter("hidebroken", "true")
+            }.body()
+
+            response.map { it.toRadioStation() }
+        } catch (e: Exception) {
+            println("Error searching radio stations: ${e.message}")
+            getMockRadioStations().filter {
+                it.name.contains(query, ignoreCase = true) ||
+                it.genre?.contains(query, ignoreCase = true) == true ||
+                it.city?.contains(query, ignoreCase = true) == true
+            }
         }
+    }
+
+    private fun RadioStationDto.toRadioStation(): RadioStation {
+        val genre = tags?.split(",")?.firstOrNull()?.trim() ?: "Outros"
+
+        return RadioStation(
+            id = id,
+            name = name,
+            streamUrl = streamUrl,
+            imageUrl = imageUrl?.takeIf { it.isNotBlank() },
+            description = null,
+            genre = genre,
+            city = state,
+            state = state,
+            country = country ?: "Brasil",
+            website = website,
+            bitrate = bitrate
+        )
     }
 
     private fun getMockRadioStations(): List<RadioStation> {
