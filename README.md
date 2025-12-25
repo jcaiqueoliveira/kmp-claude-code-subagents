@@ -1,5 +1,18 @@
 # Cloud Code Subagents for Kotlin Multiplatform
+
+![CI Status](https://github.com/jcaiqueoliveira/kmp-claude-code-subagents/workflows/CI%20-%20Build%20%26%20Test/badge.svg)
+
 This repository is a curated collection of Claude Code subagents designed for Kotlin Multiplatform (KMP) projects. Each subagent targets a specific layer or concern in a typical KMP application, providing best practices and automation for modern development.
+
+## Projects
+
+### Radio Player Brasil KMP 📻
+A full-featured radio player app for Android and iOS built with Kotlin Multiplatform and Compose Multiplatform. Features include:
+- 100% shared UI code using Compose Multiplatform (including iOS)
+- Kotlin 2.0.20 with the latest K2 compiler
+- Audio streaming with ExoPlayer (Android) and AVPlayer (iOS)
+- Favorites management and search functionality
+- [See full documentation →](radioplayerbr/README.md)
 
 ## Subagents
 
