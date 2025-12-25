@@ -1,48 +1,66 @@
-# Como Configurar CI/CD no GitHub
+# 🚀 Como Ativar CI/CD no Repositório
 
-Os arquivos de workflow de CI/CD foram criados localmente mas não podem ser enviados automaticamente devido a restrições de permissões do GitHub App.
+## ⚠️ Por que não foi adicionado automaticamente?
 
-## Opção 1: Adicionar via Interface Web (Recomendado)
+O GitHub bloqueia a criação de workflows via GitHub App sem a permissão `workflows`.
+A solução é adicionar manualmente via interface web.
 
-1. Acesse seu repositório no GitHub
-2. Vá em **Actions** → **New workflow**
-3. Clique em **set up a workflow yourself**
-4. Nomeie o arquivo como `ci.yml`
-5. Cole o conteúdo abaixo e clique em **Commit changes**
+## 📝 Passos para Adicionar (2 minutos)
 
-## Opção 2: Adicionar via Git Local
+### 1. Acesse o Repositório
+https://github.com/jcaiqueoliveira/kmp-claude-code-subagents
 
-Se você tem acesso direto ao repositório (não via GitHub App):
+### 2. Crie o Workflow
+- Clique em **Actions** (topo da página)
+- Clique em **New workflow**
+- Clique em **set up a workflow yourself**
+
+### 3. Configure o Arquivo
+- Nome do arquivo: `ci.yml`
+- Cole o conteúdo que está em `.github/workflows/ci.yml` (veja abaixo)
+- Clique em **Commit changes...**
+- Escolha "Commit directly to the `main` branch" ou crie um PR
+
+### 4. Pronto! 🎉
+A CI começará a rodar automaticamente.
+
+## 📄 Conteúdo do Workflow
+
+O arquivo `.github/workflows/ci.yml` está disponível localmente no repositório.
+Para ver o conteúdo completo:
 
 ```bash
-git add .github/workflows/
-git commit -m "Add CI/CD workflows"
-git push
+cat .github/workflows/ci.yml
 ```
 
-## Conteúdo do Workflow
+Ou copie diretamente desta localização:
+`/home/user/kmp-claude-code-subagents/.github/workflows/ci.yml`
 
-Use o arquivo que está em `.github/workflows/ci.yml` no seu repositório local.
+## ✨ O que a CI faz?
 
-Após adicionar, a CI irá:
-- ✅ Buildar o app Android e iOS em cada push/PR
-- ✅ Executar testes
-- ✅ Verificar qualidade de código
-- ✅ Gerar artefatos (APK e Framework iOS)
+Quando ativada, a CI irá automaticamente:
 
-## Arquivos Criados
+- 🤖 **Build Android**: Compila APK e roda testes
+- 🍎 **Build iOS**: Compila framework shared para iOS
+- ✨ **Lint**: Verifica qualidade de código
+- 📦 **Artefatos**: Salva APK e framework para download
 
-Os seguintes arquivos de CI já estão criados localmente:
+## 🎯 Quando roda?
 
-- `.github/workflows/ci.yml` - Pipeline principal de CI
-- `.github/workflows/README.md` - Documentação dos workflows
-- `radioplayerbr/gradlew` - Gradle wrapper (necessário para CI)
-- `radioplayerbr/.gitattributes` - Garante permissões corretas
+- Em push para `main`, `master` ou `develop`
+- Em Pull Requests para essas branches
+- Apenas quando há mudanças em `radioplayerbr/**`
 
-## Próximos Passos
+## 🔍 Ver Resultados
 
-Após adicionar o workflow:
+Após adicionar:
+1. Vá em **Actions** no GitHub
+2. Veja os workflows rodando
+3. O badge no README ficará verde! ✅
 
-1. Faça um push para `main` ou crie um PR
-2. Veja a CI rodar na aba **Actions**
-3. O badge no README ficará verde quando tudo passar! 🎉
+## 📦 Arquivos Preparados
+
+Já criados e prontos para uso:
+- ✅ `.github/workflows/ci.yml` - Pipeline de CI
+- ✅ `radioplayerbr/gradlew` - Gradle wrapper
+- ✅ `radioplayerbr/.gitattributes` - Configurações Git
